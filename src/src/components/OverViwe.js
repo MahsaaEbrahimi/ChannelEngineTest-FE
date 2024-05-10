@@ -21,7 +21,6 @@ export default function OverView(){
         })
     },[])
 
-    console.log(allOrders)
 
     const indexOfLastOrder = currentPage*orderPerPage;
     const indexOfFirstOrder= indexOfLastOrder-orderPerPage

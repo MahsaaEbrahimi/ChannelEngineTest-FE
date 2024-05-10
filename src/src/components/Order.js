@@ -1,4 +1,5 @@
 import React from "react";
+import {Link} from 'react-router-dom'
 
 export default function Order({orders}){
 
@@ -9,21 +10,13 @@ export default function Order({orders}){
                 <div className="col-4">{order.ChannelName}</div>
                 <div className="col-3">{order.ChannelOrderNo}</div>
                 <div className="col-2">{order.Status}</div>
-                <div className="col-2"><button className="btn btn-outline-secondary">more ditails</button></div>
+                <div className="col-2">
+                    <Link to={`/${order.ChannelOrderNo}`} className="btn btn-outline-secondary">more ditails</Link>
+                </div>
             </div>
         )
     })
     return(
-        // <ul className="list-group mb-4">
-        //     <div className="list-group-item d-flex justify-content-between">
-        //         <div>id</div>
-        //         <div>channel name</div>
-        //         <div>channel order no</div>
-        //         <div>status</div>
-        //         <div>ditails</div>
-        //     </div>
-        //     {orderLi}
-        // </ul>
         <div className="container-fluid">
             <div className="row p-2 border border-secondary">
                 <div className="col-1">id</div>

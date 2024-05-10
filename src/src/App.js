@@ -1,12 +1,19 @@
-
 import './App.css';
+import { BrowserRouter, Routes, Route ,Link} from 'react-router-dom';
 import OverView from './components/OverViwe';
+import DetailPage from './components/Detail';
 
 function App() {
   return (
-    <div className="App">
-      <OverView/>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<OverView/>}/>
+        <Route path='/:id' element={<DetailPage/>}/>
+      </Routes>
+    </BrowserRouter>
+    
+     
+   
   );
 }
 
