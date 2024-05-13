@@ -7,7 +7,7 @@ export default function Order({orders}){
         return(
             <div key={order.id} className="row p-2 border border-secondary d-flex align-items-center">
                 <div className="col-1">{order.Id}</div>
-                <div className="col-4">{order.ChannelName}</div>
+                <div className="col-4">{order.GlobalChannelName}</div>
                 <div className="col-3">{order.ChannelOrderNo}</div>
                 <div className="col-2">{order.Status}</div>
                 <div className="col-2">
