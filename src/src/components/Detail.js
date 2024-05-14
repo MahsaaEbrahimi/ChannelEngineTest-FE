@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useParams,Link } from "react-router-dom";
 import { useEffect , useState} from "react";
 import axios from "axios";
 
@@ -15,10 +15,11 @@ export default function DetailPage(){
         .then(data=>{
             setOrderData(data?.data?.Content[0])
         })
+        .catch((error)=>{
+            console.log(error.message)
+        })
 
-    },[params.id])
-
-    console.log(orderData) 
+    },[params.id]) 
 
     var date = new Date(orderData.OrderDate)
     const orderTime=date.toLocaleTimeString()
@@ -30,7 +31,7 @@ export default function DetailPage(){
    
 
     return(
-        <div className="container d-flex flex-column align-items-center justify-content-between">
+        <div className="container d-flex flex-column align-items-center justify-content-between mt-4">
             
             <div className="container border border-secondary rounded m-1 ">
                 <h3 className="text-secondary p-2 text-start">Order details</h3>
@@ -74,7 +75,6 @@ export default function DetailPage(){
 
                </div>
 
-
             </div>
             <div  className="container border border-secondary rounded m-1 ">
                 <h3 className="text-secondary p-2 text-start">Personal Details</h3>
@@ -98,10 +98,9 @@ export default function DetailPage(){
                 </div>
 
             </div>
+            <Link to=".." className="btn btn-secondary mt-3">Go Back</Link>
            
-
         </div>
-        
 
     )
 }

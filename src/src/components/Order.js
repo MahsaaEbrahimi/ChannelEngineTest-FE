@@ -6,17 +6,25 @@ export default function Order({orders}){
     const orderLi=orders.map(order=>{
         return(
             <div key={order.id} className="row p-2 border border-secondary d-flex align-items-center">
-                <div className="col-1">{order.Id}</div>
-                <div className="col-4">{order.GlobalChannelName}</div>
+                <div className="col-1 ">{order.Id}</div>
+                <div className="col-4 ">{order.GlobalChannelName}</div>
                 <div className="col-3">{order.ChannelOrderNo}</div>
                 <div className="col-2">{order.Status}</div>
                 <div className="col-2">
-                    <Link to={`/${order.ChannelOrderNo}`} className="btn btn-outline-secondary">more ditails</Link>
+                    <Link to={`/${order.ChannelOrderNo}`} className="btn btn-outline-secondary btn-sm">details</Link>
                 </div>
             </div>
         )
     })
+
+    let noItem=false
+    if(orderLi.length ===0){
+        noItem=true
+    }
+
+
     return(
+        
         <div className="container-fluid ">
             <div className="row p-2 border border-secondary rounded mb-1 header">
                 <div className="col-1">id</div>
@@ -26,6 +34,7 @@ export default function Order({orders}){
                 <div className="col-2">ditails</div>
             </div>
             {orderLi}
+            {noItem&& <h4 className="text-secondary">No Item to show</h4>}
         </div>
     )
 }

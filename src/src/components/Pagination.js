@@ -1,25 +1,34 @@
 import React from "react";
 
-export default function Pagination({total , orderPerPage , paginate , reducePageNumber , increasePageNumber}){
+export default function Pagination({total , orderPerPage, currentPage , paginate , reducePageNumber , increasePageNumber}){
+
+    let pages= Math.ceil(total/orderPerPage)
     const pageNumbers=[]
-    for(let i = 1 ; i <= Math.ceil(total/orderPerPage) ; i++){
+    for(let i = 1 ; i <= pages ; i++){
         pageNumbers.push(i)
     }
 
     const numberList= pageNumbers.map((number)=>{
-        return <li key={number} className="page-item"><a class="page-link" href="#" onClick={()=>paginate(number)}>{number}</a></li>
+        let active=(currentPage===number)?"active":""
+        let disabled=(pages<=1)?"disabled":""
+        return <li key={number} className={`page-item ${active} ${disabled}`}><a class="page-link" href="#" onClick={()=>paginate(number)}>{number}</a></li>
     })
     return(
-        <nav aria-label="Page navigation example">
+        <nav aria-label="container">
             <ul className="pagination justify-content-center mt-2">
-                <li className="page-item">
-                    <a className="page-link" href="#" onClick={reducePageNumber} >Previous</a>
-                </li>
+                {currentPage>1 ?
+                    (<li className="page-item">
+                        <a className="page-link" onClick={reducePageNumber} >Previous</a>
+                    </li>):"" }
                 {numberList}
-                <li className="page-item">
-                    <a className="page-link" href="#" onClick={increasePageNumber} >Next</a>
-                </li>
+                {currentPage< pages ? 
+                    (<li className="page-item">
+                        <a className="page-link" onClick={increasePageNumber} >Next</a>
+                    </li>):""}
             </ul>
+            
+
+
         </nav>
         
     )

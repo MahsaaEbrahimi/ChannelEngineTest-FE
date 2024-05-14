@@ -8,47 +8,56 @@ import StatusFilter from "./StatusFilter";
 export default function OverView(){
 
     const apikey ='541b989ef78ccb1bad630ea5b85c6ebff9ca3322';
-
+    const[Loading,setLoading]=useState(false)
     const[orderNumber,setTotalCount]=useState(0)
     const[allOrders,setAllOrders]=useState([])
     const[currentPage,setCurrentPage]=useState(1)
     const[orderPerPage,setOrderPerPage]=useState(10)
     const[status,setStatus]=useState("")
-    // const url=""
-    // if(status!==""){
-    //     url=`https://api-dev.channelengine.net/api/v2/orders?statuses=${status}?apikey=${apikey}`
-    // }else{
-    //     url=`https://api-dev.channelengine.net/api/v2/orders?apikey=${apikey}`
-    // }
+
   
     useEffect(()=>{
-
+        setLoading(true)
         axios.get(`https://api-dev.channelengine.net/api/v2/orders?apikey=${apikey}`)
         .then(data=>{
             setTotalCount(data?.data?.TotalCount)
             setAllOrders(data?.data?.Content)
+            setLoading(false)
+        })
+        .catch((error)=>{
+            console.log(error.message)
+            setLoading(false)
         })
     },[])
 
     function aplayFilter(status){
         if(status==="ALL"){
+            setLoading(true)
             axios.get(`https://api-dev.channelengine.net/api/v2/orders?apikey=${apikey}`)
             .then(data=>{
                 setTotalCount(data?.data?.TotalCount)
                 setAllOrders(data?.data?.Content)
+                setLoading(false)
+            })
+            .catch((error)=>{
+                console.log(error.message)
+                setLoading(false)
             })
 
         }else{
-            axios.get(`https://api-dev.channelengine.net/api/v2/orders?statuses=${status}&apikey=541b989ef78ccb1bad630ea5b85c6ebff9ca3322`)
+            setLoading(true)
+            axios.get(`https://api-dev.channelengine.net/api/v2/orders?statuses=${status}&apikey=${apikey}`)
             .then(data=>{
                 setTotalCount(data?.data?.TotalCount)
                 setAllOrders(data?.data?.Content)
+                setCurrentPage(1)
+                setLoading(false)
             })
-
+            .catch((error)=>{
+                console.log(error.message)
+                setLoading(false)
+            })
         }
-       
-
-        
     }
 
 
@@ -59,11 +68,7 @@ export default function OverView(){
     const paginate =(number) => setCurrentPage(number)
 
     function reducePageNumber(){
-        if(currentPage===1){
-            setCurrentPage(1)
-        }else{
-            setCurrentPage(privVal=>privVal-1)
-        }
+        setCurrentPage(privVal=>privVal-1)
     }
 
     function increasePageNumber(){
@@ -75,29 +80,35 @@ export default function OverView(){
     }
 
 
-
     return(
         <div>
-            
-            <div className="container">
+            <div className="container-md">
                 <h2 className="text-secondary mb-3">Order OverViwe</h2>
                 <div className="border border-secondary d-flex  align-items-center p-3 mb-2 rounded">
                     <h4 className="text-secondary me-5">Filter by:</h4>
                     <label className="text-secondary">status: 
                         <StatusFilter aplayFilter={aplayFilter}/>
                     </label>
-                    
-
                 </div>
+                {Loading?
+                   (<div class="spinner-border text-primary" role="status">
+                       <span class="visually-hidden">Loading...</span>
+                    </div>): 
+                    (<Order orders={currentOrders}/>)
+                }
                 
-                <Order orders={currentOrders}/>
-                <Pagination
-                    total={orderNumber}
-                    orderPerPage={orderPerPage}
-                    paginate={paginate}
-                    reducePageNumber={reducePageNumber}
-                    increasePageNumber={increasePageNumber}
-                />
+                { !Loading &&
+                    <Pagination
+                        total={orderNumber}
+                        orderPerPage={orderPerPage}
+                        paginate={paginate}
+                        reducePageNumber={reducePageNumber}
+                        increasePageNumber={increasePageNumber}
+                        currentPage={currentPage}
+                    />
+                }
+                
+
                 
             </div>
         </div>
